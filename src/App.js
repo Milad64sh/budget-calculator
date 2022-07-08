@@ -11,21 +11,87 @@ const initialExpenses = [
   { id: uuid(), charge: 'credit card bill', amount: 1200 },
 ];
 function App() {
+  // ************** state values **************
+  // all expenses, and expense
   const [expenses, setExpenses] = useState(initialExpenses);
+  // single expense
+  const [charge, setCharge] = useState('');
+  // single amount
+  const [amount, setAmount] = useState('');
+  // alert
+  const [alert, setAlert] = useState({ show: false });
+  // edit
+  // ************** functionality **************
+  // handle charge
+  const handleCharge = (e) => {
+    setCharge(e.target.value);
+  };
+  // handle amount
+  const handleAmount = (e) => {
+    setAmount(e.target.value);
+  };
+  // handle alert
+  const handleAlert = ({ type, text }) => {
+    setAlert({ show: true, type, text });
+    setTimeout(() => {
+      setAlert({ show: false });
+    }, 3000);
+  };
+  // handle submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (charge !== '' && amount > 0) {
+      const singleExpense = { id: uuid(), charge, amount };
+      setExpenses([...expenses, singleExpense]);
+      handleAlert({ type: 'success', text: 'item added' });
+      setCharge('');
+      setAmount('');
+    } else {
+      handleAlert({
+        type: 'danger',
+        text: `charge can't be empty value and amount value has to be bigger than zero`,
+      });
+    }
+  };
+  // clear all items
+  const clearItems = () => {
+    setExpenses([]);
+    handleAlert({ type: 'danger', text: 'items deleted' });
+  };
+  // handle delete
+  const handleDelete = (id) => {
+    let tempExpenses = expenses.filter((item) => item.id !== id);
+    setExpenses(tempExpenses);
+    handleAlert({ type: 'danger', text: 'item deleted' });
+  };
+  // handle edit
+  const handleEdit = (id) => {};
   return (
     <>
+      {alert.show && <Alert type={alert.type} text={alert.text} />}
       <Alert />
       <h1>budget calculator</h1>
       <main className='App'>
-        <ExpenseForm />
-        <ExpenseList expenses={expenses} />
+        <ExpenseForm
+          charge={charge}
+          amount={amount}
+          handleAmount={handleAmount}
+          handleCharge={handleCharge}
+          handleSubmit={handleSubmit}
+        />
+        <ExpenseList
+          expenses={expenses}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+          clearItems={clearItems}
+        />
       </main>
       <h1>
         total spending :{' '}
         <span className='total'>
           $
           {expenses.reduce((acc, curr) => {
-            return (acc += curr.amount);
+            return (acc += parseInt(curr.amount));
           }, 0)}
         </span>
       </h1>

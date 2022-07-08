@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 :root {
   --primaryColor: #f15025;
   --mainWhite: #fff;
@@ -14,7 +14,7 @@
 body {
   background: var(--mainGrey);
   color: var(--mainBlack);
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 h1 {
   text-align: center;
@@ -87,6 +87,7 @@ label {
   margin-left: 0.75rem;
   font-size: 1.2rem;
 }
+
 .list {
   margin: 2rem 0.75rem 0 0.75rem;
   list-style-type: none;
@@ -137,6 +138,11 @@ label {
 }
 .edit-btn {
   color: var(--mainGreen);
+}
+.clear-btn,
+.edit-btn:hover {
+  transform: scale(1.07);
+  transition: all 0.3s linear;
 }
 .total {
   font-weight: 300;
